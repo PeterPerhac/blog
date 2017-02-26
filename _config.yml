@@ -1,9 +1,9 @@
 title: "Partially functional"
 author: "Peter Perhac"
-description: "Adventures in Scalaland"
+description: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution; it represents the wise choice of many alternatives - choice, not chance, determines your destiny. [Aristotle]"
 more: "read more »"
 url: "http://www.perhac.com/blog/"
-# baseurl: "/contrast" # comment out if in root directory
+baseurl: "/blog" # comment out if in root directory
 
 comments:
   disqus: "pperhac"
@@ -21,16 +21,12 @@ style:
 # notice: squared icons only work if supported by font-awesome
 
 links:
-  - github: {url: "https://github.com/me/", square: true}
-  - reddit: {url: "https://www.reddit.com/user/me/", square: true}
-  - twitter: {url: "https://twitter.com/me/", square: true}
-  - facebook: {url: "https://www.facebook.com/me", square: true}
-  - google-plus: {url: "https://plus.google.com/+me", square: true}
-  - youtube: {url: "https://www.youtube.com/user/me", square: true}
-  - tumblr: {url: "http://me.tumblr.com/", square: true}
-  - steam: {url: "http://steamcommunity.com/id/me/", square: true}
+  - github: {url: "https://github.com/PeterPerhac/", square: true}
+  - facebook: {url: "https://www.facebook.com/perhac.peter", square: true}
+  - google-plus: {url: "https://plus.google.com/+PeterPerhacMComp", square: true}
+  - youtube: {url: "http://www.youtube.com/user/Mast3rP3t3r", square: true}
 
-paginate: 10
+paginate: 5
 excerpt_separator: "\n\n\n" # excerpt ends after two blank lines
 permalink: pretty
 defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
