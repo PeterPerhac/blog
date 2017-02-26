@@ -1,12 +1,12 @@
-title: "Blog Title"
-author: "Blog Author"
-description: "Really cool blog about ... something"
+title: "Partially functional"
+author: "Peter Perhac"
+description: "Adventures in Scalaland"
 more: "read more »"
-url: "https://niklasbuschmann.github.io"
-baseurl: "/contrast" # comment out if in root directory
+url: "http://www.perhac.com/blog/"
+# baseurl: "/contrast" # comment out if in root directory
 
 comments:
-  disqus: "niklasbuschmann"
+  disqus: "pperhac"
 #  isso: "comments.mysite.org"
 
 style:
@@ -15,7 +15,7 @@ style:
   padding: 20%
   nav: "#222"
   articles: 'stripe' # 'light' 'dark' and 'stripe' possible
-  uppercase: true
+  uppercase: false
 
 # see http://fontawesome.io/icons/#brand for all possible icons
 # notice: squared icons only work if supported by font-awesome
@@ -35,3 +35,4 @@ excerpt_separator: "\n\n\n" # excerpt ends after two blank lines
 permalink: pretty
 defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
 gems: [jekyll-feed, jekyll-paginate] # include feed plugin (supported by gh-pages)
+
