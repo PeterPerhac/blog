@@ -6,7 +6,7 @@ url: "http://www.perhac.com/blog/"
 baseurl: "/blog" # comment out if in root directory
 
 comments:
-  disqus: "pperhac"
+  disqus: "perhac-blog.disqus.com"
 #  isso: "comments.mysite.org"
 
 style:

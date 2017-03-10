@@ -10,12 +10,18 @@ layout: blank
     <div>
 {{ content }}
     </div>
-    {% if site.comments.isso and page.comments %}
-    <div id="isso-thread"></div>
-    {% endif %}
     {% if site.comments.disqus and page.comments %}
-    <div id="disqus_thread"></div>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div id="disqus_thread"></div>
+        <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://perhac-blog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <script id="dsq-count-scr" src="//perhac-blog.disqus.com/count.js" async></script>
     {% endif %}
   </article>
 </main>
