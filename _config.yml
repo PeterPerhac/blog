@@ -2,7 +2,7 @@ title: "Partially functional"
 author: "Peter Perhac"
 description: "As I am diving deeper and deeper into the world of functional programming, I decided to keep a blog where I can rant about all sorts of things."
 more: "read more »"
-url: "https://www.perhac.com/blog/"
+url: "https://www.perhac.com/blog"
 baseurl: "/blog" # comment out if in root directory
 
 comments:
