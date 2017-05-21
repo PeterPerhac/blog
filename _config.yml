@@ -1,8 +1,8 @@
 title: "Partially functional"
 author: "Peter Perhac"
-description: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution; it represents the wise choice of many alternatives - choice, not chance, determines your destiny. [Aristotle]"
+description: "As I am diving deeper and deeper into the world of functional programming, I decided to keep a blog where I can rant about all sorts of things."
 more: "read more »"
-url: "http://www.perhac.com/blog/"
+url: "https://www.perhac.com/blog/"
 baseurl: "/blog" # comment out if in root directory
 
 comments:
@@ -27,7 +27,7 @@ links:
   - youtube: {url: "http://www.youtube.com/user/Mast3rP3t3r", square: true}
 
 paginate: 5
-excerpt_separator: "\n\n\n" # excerpt ends after two blank lines
+excerpt_separator: "\n\n\n\n" # excerpt ends after three blank lines
 permalink: pretty
 defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
 gems: [jekyll-feed, jekyll-paginate] # include feed plugin (supported by gh-pages)
