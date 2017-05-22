@@ -8,7 +8,19 @@ published: true
 
 # Conditional flatMap
 
-I found myself in a situation when several `Futures` had to execute in a predefined sequence and one of those `Future`s was to be executed _only uder a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM` but later decided the solution looked ugly and so I played with cats and made the code nicer to read. After all,
+I found myself in a situation when several Futures had to execute in a predefined sequence and one of those Futures was to be executed _only uder a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM`:
+
+{% highlight scala %}
+  _ <- condition.pure.ifM(service.call(params), ().pure)
+{% endhighlight %}
+
+However, the above doesn't look good. It's hard to see what's going on. So I tinkered with cats and made the more pleasing to the eye:
+
+{% highlight scala %}
+  _ <- service.call(params) onlyIf condition
+{% endhighlight %}
+
+After all,
 
 >  In the original language design great care was taken to ensure that the syntax would allow programmers to create natural looking DSLs.
 > 
@@ -41,11 +53,11 @@ exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
 
 This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an instance of `Applicative[F]` available in the implicit scope.
 
-We can make further use of the Cats library to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is added by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
+We can make further use of the Cats library to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
 
 Just like `flatMap` takes a function `A => F[B]`, `ifM` takes **two** functions of this shape, but only flatMaps _one of them_. The first paramter to `ifM` is called `ifTrue` and the second one is `ifFalse` and which one gets flatmapped is obvious. I made the conditional service call in the `ifTrue` part, leaving the `ifFalse` as a successfully completed `Future` of `Unit`.
 
-Then I thought I would much rather have the same line written like this:
+But when I slept on it and re-visited the line the next day, I thought I would much rather have it written like this:
 
 {% highlight scala %}
   _ <- keystore.cache(INELIGIBILITY_REASON, question.name) onlyIf exit
