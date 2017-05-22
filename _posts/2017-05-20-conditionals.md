@@ -8,11 +8,12 @@ published: true
 
 # Conditional flatMap
 
-I found myself in a situation when several `Futures` had to execute in a predefined sequence and one of those `Future`s was to be executed only uder a certain condition. I immediately reached for the cats-provided FlatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM` but later decided the solution looked just a tad bit ugly and so I sprinkled some implicit magic on top to make the code nicer to read. After all, 
+I found myself in a situation when several `Futures` had to execute in a predefined sequence and one of those `Future`s was to be executed _only uder a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM` but later decided the solution looked ugly and so I played with cats and made the code nicer to read. After all,
 
 >  In the original language design great care was taken to ensure that the syntax would allow programmers to create natural looking DSLs.
 > 
 > www.scala-lang.org
+
 
 
 ### Original solution
