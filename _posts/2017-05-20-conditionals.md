@@ -1,29 +1,86 @@
 ---
-title:  "Conditional flatMap - tweaking sequences of effects with boolean conditions"
+title:  Conditional flatMap - tweaking sequences of effects with boolean conditions
 date:   2017-05-20 22:28:00
-categories: ['scala']
-tags: ['scala', 'cats']
+categories: scala
+tags: scala cats
 published: true
 ---
 
 # Conditional flatMap
 
-I found myself in a situation when several Futures had to execute in a prededined sequence and towards the end, one more future was to be executed under a certain condition. I immediately reached for the cats-provided FlatMap syntax and my pet `ifM` but later decided to sprinkle some Scala implicit magic and make the code a bit more readable. I want to tell you all about it.
+I found myself in a situation when several `Futures` had to execute in a predefined sequence and one of those `Future`s was to be executed only uder a certain condition. I immediately reached for the cats-provided FlatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM` but later decided the solution looked just a tad bit ugly and so I sprinkled some implicit magic on top to make the code nicer to read. After all, 
+
+>  In the original language design great care was taken to ensure that the syntax would allow programmers to create natural looking DSLs.
+> 
+> www.scala-lang.org
 
 
-
-**Code**
+### Original solution
 
 {% highlight scala %}
+import scala.concurrent.ExecutionContext.Implicits.global
 
-object ConditionalFlatMap {
-    implicit class CustomApplicativeOps[F[_] : Applicative, A](fa: => F[A]) {
-        def onlyIf(condition: Boolean)(implicit F: Applicative[F]): F[Unit] =
-            if (condition) F.map(fa)(_ => ()) else F.pure(())
-    }
-}
+import cats.instances.future._
+import cats.syntax.applicative._
+import cats.syntax.flatMap._
 
+for {
+  vatEligibility <- viewModel[VatServiceEligibility]
+  _ <- s4l.saveForm(vatEligibility.setAnswer(question, data.answer))
+  exit = data.answer == question.exitAnswer
+  _ <- exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
+} yield ...
 {% endhighlight %}
 
-One thing to note: cats will provide `whenA` syntax from version 1.0. Curretnly we are using 0.9 version and the `onlyIf` syntax I came up with provides the same functionality.
+Let's focus on this line:
+
+{% highlight scala %}
+exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
+{% endhighlight %}
+
+This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an instance of `Applicative[F]` available in the implicit scope.
+
+We can make further use of the Cats library to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is added by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
+
+Just like `flatMap` takes a function `A => F[B]`, `ifM` takes **two** functions of this shape, but only flatMaps _one of them_. The first paramter to `ifM` is called `ifTrue` and the second one is `ifFalse` and which one gets flatmapped is obvious. I made the conditional service call in the `ifTrue` part, leaving the `ifFalse` as a successfully completed `Future` of `Unit`.
+
+Then I thought I would much rather have the same line written like this:
+
+{% highlight scala %}
+  _ <- keystore.cache(INELIGIBILITY_REASON, question.name) onlyIf exit
+{% endhighlight %}
+
+### Natural looking DSL
+
+Remember the part about natural looking DSLs? With the help of an implicit class and some cat-herding skills, I was able to make my dream come true:
+
+{% highlight scala %}
+implicit class CustomApplicativeOps[F[_] : Applicative, A](fa: => F[A]) {
+  def onlyIf(condition: Boolean)(implicit F: Applicative[F]): F[Unit] =
+    if (condition) F.map(fa)(_ => ()) else F.pure(())
+}
+{% endhighlight %}
+
+
+### Final solution
+With this implicit class imported into scope, the final for-comprehension looks like this:
+
+{% highlight scala %}
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import cats.instances.future._
+import cats.syntax.applicative._
+import cats.syntax.flatMap._
+
+for {
+  vatEligibility <- viewModel[VatServiceEligibility]
+  _ <- s4l.saveForm(vatEligibility.setAnswer(question, data.answer))
+  exit = data.answer == question.exitAnswer
+  _ <- keystore.cache(INELIGIBILITY_REASON, question.name) onlyIf exit
+} yield ...
+{% endhighlight %}
+
+And that's all, folks.
+
+PS: cats will provide `whenA` syntax from version 1.0. Check it out when it comes out. It can be used to achieve similar sort of thing.
 

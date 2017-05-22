@@ -12,8 +12,8 @@ comments:
 style:
   body: 'white'
   margin: 0%
-  padding: 20%
-  nav: "#222"
+  padding: 10%
+  nav: "#333"
   articles: 'stripe' # 'light' 'dark' and 'stripe' possible
   uppercase: false
 
