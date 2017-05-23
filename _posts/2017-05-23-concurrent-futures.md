@@ -66,7 +66,7 @@ object ParallelVsSerialExecution {
 
   def parallelFuturesWithCartesians(): Future[Unit] = {
     import cats.syntax.cartesian._
-    findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map productPrinter
+    findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map print3
   }
 
   def main(args: Array[String]): Unit = {
@@ -88,7 +88,7 @@ object ParallelVsSerialExecution {
 
   private def printer: (List[String]) => Unit = _.foreach(println)
 
-  private def productPrinter: (String, String, String) => Unit = Seq(_, _, _).foreach(println)
+  private def print3: (String, String, String) => Unit = Seq(_, _, _).foreach(println)
 
 }
 
@@ -152,7 +152,7 @@ ______
 
 {% highlight scala %}
 import cats.syntax.cartesian._
-findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map productPrinter
+findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map print3
 {% endhighlight %}
 
 Cats library provides a neat syntax for creating cross products - _cartesians_. Importing `cats.syntax.cartesian._` brings the `|@|` (scream operator) into the game. This is used for building up an instance of a `CartesianBuilder` of appropriate arity (i.e. 2..22) You can then call `apWith`, `map`, `contramap`, `imap` or `tupled` on it and in this way manipulate the final result of all concurrently executed futures. This works very nicely when you have a case class modeling the composite of all (completed) future values. Like so:
