@@ -1,5 +1,5 @@
 ---
-title:  Conditional flatMap - tweaking sequences of effects with boolean conditions
+title:  Concurrent evaluation of Futures - run it in parallel if you can
 date:   2017-05-20 22:28:00
 categories: scala
 tags: scala cats
