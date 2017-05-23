@@ -24,7 +24,7 @@ links:
   - github: {url: "https://github.com/PeterPerhac/", square: true}
   - facebook: {url: "https://www.facebook.com/perhac.peter", square: true}
   - google-plus: {url: "https://plus.google.com/+PeterPerhacMComp", square: true}
-  - youtube: {url: "http://www.youtube.com/user/Mast3rP3t3r", square: true}
+  - stackoverflow: {url: "https://stackoverflow.com/users/81520/peter-perh%C3%A1%C4%8D", square: true}
 
 paginate: 5
 excerpt_separator: "\n\n\n\n" # excerpt ends after three blank lines
