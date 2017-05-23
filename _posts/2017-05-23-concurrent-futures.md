@@ -97,12 +97,19 @@ object ParallelVsSerialExecution {
 
 In the above code listing you can find several ways of executing multiple futures in parallel and one way to run them sequentially. Let's go through them briefly one by one:
 
-- **sequential** execution of Futures taking the classic approach - via for-comprehension - is demonstrated in `sequentialFuturesWithMonads`
-- **parallel** execution taking the classic approach - via for-comprehension with extracted futures (`parallelFuturesBasic`)
-- **parallel** execution using cats-provided `Traverse` type class and `sequence` method (`parallelFuturesWithSequence`)
-- **parallel** execution using cats-provided `Traverse` type class (`parallelFuturesWithTraverse`)
-- **parallel** execution using cats-provided `CartesianBuilder` and the `|@|` syntax (the "scream" operator) (`parallelFuturesWithCartesians`)
+- `sequentialFuturesWithMonads`
+  - This is the classic approach to sequencing asynchronous execution, where the outcome of one Future is used as input for the next. Doing a for-comprehension is making use of the monadic nature of the comprehended-over type. They rely on `flatMap` which takes care of binding the two futures together. Futures created inside a for-comprehension will be running **serially,** not in parallel.
+- `parallelFuturesBasic`
+  - This is the most simplistic way to execute futures in parallel. Moving their creation to _outside_ of the for-comprehension will cause their execution to proceed practically at the same time (at the time they are created). We keep track of the promised future values by keeping a handle on them (assignment to `val`) and then for-comprehending over the promises, collecting their resulting values as they become available. The good part of this solution is, you don't need to include no libraries (like _cats_) in order to achieve your goal.
+- `parallelFuturesWithSequence`
+  - Here we're using the cats-provided `Traverse` type class and the `sequence` method that "swaps the wrappers". So, when we have a list of future values, we can use `sequence` to turn that into a future list of values. `map` will ensure that the processing of the eventual list of values only happens once the future completes successfully.
+- `parallelFuturesWithTraverse`
+  - If you look at the previous solution with `sequence` you might wonder if it really is necessary to repeat the name of the function `findFruit` three times over. If the function used for obtaining the future value inside the list is alays the same, we could use the `traverse` method (at the core of the Traverse type class) and "visit" each value in the list with the future-producing function. All of these produced futures together, will form an eventual list of results. Once that list is availanle, we'll map it to make us of the result.
+- `parallelFuturesWithCartesians`
+  - Cats library provides a neat syntax for creating cross products - _cartesians_ - of various types. Importing `cats.syntax.cartesian._` brings the `|@|` (scream operator) into the game and what this does is it builds up an instance of `CartesianBuilder` of appropriate arity (e.g. CartesianBuilder2, CartesianBuilder3, up to 22) which allows you to call `apWith`, `map`, `contramap`, `imap` or `tupled` on the final result of all concurrently executing futures. This fits very nicely when you have a case class modeling the composite of all (completed) future values.
 
+
+If you review the output of running the above program, you can see that while the futures in the for-comprehension are started one after another in roughly one-second intervals, all the rest of the methods are firing all futures off at the same time. Note also, that the printed output is always ordered the way we would expect: apple, banana, cherry.
 
 {%highlight text %}
 

@@ -13,7 +13,7 @@ style:
   body: 'white'
   margin: 0%
   padding: 10%
-  nav: "#333"
+  nav: "#222"
   articles: 'stripe' # 'light' 'dark' and 'stripe' possible
   uppercase: false
 
