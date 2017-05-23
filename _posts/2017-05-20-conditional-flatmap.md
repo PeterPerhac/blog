@@ -1,9 +1,10 @@
 ---
 title:  Conditional flatMap - tweaking sequences of effects with boolean conditions
 date:   2017-05-20 22:28:00
-categories: scala
+category: scala
 tags: scala cats
 published: true
+
 ---
 
 # Conditional flatMap
