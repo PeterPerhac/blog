@@ -1,5 +1,5 @@
 ---
-title:  Concurrent evaluation of Futures - run it in parallel if you can
+title:  Concurrent evaluation of Futures
 date:   2017-05-23 19:02:00
 category: scala
 tags: scala cats
