@@ -7,8 +7,6 @@ published: true
 
 ---
 
-# Conditional flatMap
-
 I found myself in a situation when several Futures had to execute in a predefined sequence and one of those Futures was to be executed _only uder a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM`:
 
 {% highlight scala %}

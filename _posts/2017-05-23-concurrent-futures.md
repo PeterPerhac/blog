@@ -6,98 +6,20 @@ tags: scala cats
 published: true
 ---
 
-# Parallel Futures
-
 In some cases execution of a Future depends on the outcome of an execution of a previous Future. We would use `flatMap` and `map` to sequence the evaluation of our dependent futures.
 
 On the other hand, in cases when futures are _independent_ of each other, it is only reasonable to execute them concurrently and collect their results, one after another, when ready. The simplest of tricks to achieve this is to write a for-comprehension and pull out the creation of Futures outside of it.  A `Future` is submitted to an execution context as soon as it is created. If we create the futures prior to entering our for-comprehension, they are all running (or are at the very least _scheduled_ to run) and we utilise the for-comprehension only to collect their results (future values) in sequential manner. While this approach works, let's see some other ways to do this before we adopt it.
 
-There are many ways to defur a feline. Also, there is more than one way to execute a number of Futures in parallel. Let's have a look at some of our options:
+There are many ways to defur a feline. Also, there is more than one way to execute a number of Futures in parallel. Let's have a look at some of our options.
 
 
 
-{%highlight scala %}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration.Inf
-import scala.concurrent.{Await, Future}
-
-object ParallelVsSerialExecution {
-
-  import cats.instances.future._
-
-  def findFruit(fruit: String) = Future {
-    println(s"${System.currentTimeMillis()} looking for fruit")
-    Thread.sleep(1000)
-    s"I found your $fruit"
-  }
-
-  def sequentialFuturesWithMonads(): Future[Unit] =
-    for {
-      a <- findFruit("apple")
-      b <- findFruit("banana")
-      c <- findFruit("cherry")
-    } yield Seq(a, b, c).foreach(println)
-
-
-  def parallelFuturesBasic(): Future[Unit] = {
-    val fa = findFruit("apple")
-    val fb = findFruit("banana")
-    val fc = findFruit("cherry")
-
-    for {
-      a <- fa
-      b <- fb
-      c <- fc
-    } yield Seq(a, b, c).foreach(println)
-  }
-
-  def parallelFuturesWithSequence(): Future[Unit] = {
-    import cats.instances.list._
-    import cats.syntax.traverse._
-    List(findFruit("apple"), findFruit("banana"), findFruit("cherry")).sequence map printer
-  }
-
-  def parallelFuturesWithTraverse(): Future[Unit] = {
-    import cats.instances.list._
-    import cats.syntax.traverse._
-    List("apple", "banana", "cherry") traverse findFruit map printer
-  }
-
-  def parallelFuturesWithCartesians(): Future[Unit] = {
-    import cats.syntax.cartesian._
-    findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map print3
-  }
-
-  def main(args: Array[String]): Unit = {
-    import cats.syntax.applicative._
-    val program = for {
-      _ <- sequentialFuturesWithMonads()
-      _ <- println("\n===\n").pure
-      _ <- parallelFuturesBasic()
-      _ <- println("\n===\n").pure
-      _ <- parallelFuturesWithSequence()
-      _ <- println("\n===\n").pure
-      _ <- parallelFuturesWithTraverse()
-      _ <- println("\n===\n").pure
-      _ <- parallelFuturesWithCartesians()
-    } yield println("\n===\n")
-
-    Await.result(program, Inf)
-  }
-
-  private def printer: (List[String]) => Unit = _.foreach(println)
-
-  private def print3: (String, String, String) => Unit = Seq(_, _, _).foreach(println)
-
-}
-
-{% endhighlight %}
-
-
-In the above code listing you can find several ways of executing multiple futures in parallel and one way to run them sequentially. Let's go through them briefly one by one:
+The below code blocks are excerpts from the sample program, full listing of which is included towards the _end of this post_. The program shows several ways of executing multiple futures in parallel. Let's go through them and briefly discuss each approach:
 
 - `sequentialFuturesWithMonads`
+Let's first have a look at an example that evaluates futures **serially**, one by one. I include this to make a point that if you need to run computations _in parallel_, this is how _not to do it_.
+
 {% highlight scala %}
 for {
   a <- findFruit("apple")
@@ -106,7 +28,7 @@ for {
 } yield Seq(a, b, c).foreach(println)
 {% endhighlight %}
 
-This is the classic approach to sequencing asynchronous execution, where the outcome of one Future is used as input for the next. Doing a for-comprehension is making use of the monadic nature of the comprehended-over type. They rely on `flatMap` which takes care of binding the two futures together. Futures created inside a for-comprehension will be running **serially,** not in parallel.
+This is the classic approach to sequencing asynchronous execution, where the outcome of one Future is used as input for the next. Doing a for-comprehension is making use of the monadic nature of the comprehended-over type. For-comprehensions rely on `flatMap` which takes care of binding the two futures together. Futures created inside a for-comprehension will be running **serially,** not in parallel.
 
 ______
 
@@ -214,3 +136,85 @@ I found your cherry
 
 ===
 {%endhighlight %}
+
+And just for completeness, here's copy-pastable code you could throw into a REPL to try this out. Remember to include the cats library on your classpath.
+
+{%highlight scala %}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration.Inf
+import scala.concurrent.{Await, Future}
+
+object ParallelVsSerialExecution {
+
+  import cats.instances.future._
+
+  def findFruit(fruit: String) = Future {
+    println(s"${System.currentTimeMillis()} looking for fruit")
+    Thread.sleep(1000)
+    s"I found your $fruit"
+  }
+
+  def sequentialFuturesWithMonads(): Future[Unit] =
+    for {
+      a <- findFruit("apple")
+      b <- findFruit("banana")
+      c <- findFruit("cherry")
+    } yield Seq(a, b, c).foreach(println)
+
+
+  def parallelFuturesBasic(): Future[Unit] = {
+    val fa = findFruit("apple")
+    val fb = findFruit("banana")
+    val fc = findFruit("cherry")
+
+    for {
+      a <- fa
+      b <- fb
+      c <- fc
+    } yield Seq(a, b, c).foreach(println)
+  }
+
+  def parallelFuturesWithSequence(): Future[Unit] = {
+    import cats.instances.list._
+    import cats.syntax.traverse._
+    List(findFruit("apple"), findFruit("banana"), findFruit("cherry")).sequence map printer
+  }
+
+  def parallelFuturesWithTraverse(): Future[Unit] = {
+    import cats.instances.list._
+    import cats.syntax.traverse._
+    List("apple", "banana", "cherry") traverse findFruit map printer
+  }
+
+  def parallelFuturesWithCartesians(): Future[Unit] = {
+    import cats.syntax.cartesian._
+    findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map print3
+  }
+
+  def main(args: Array[String]): Unit = {
+    import cats.syntax.applicative._
+    val program = for {
+      _ <- sequentialFuturesWithMonads()
+      _ <- println("\n===\n").pure
+      _ <- parallelFuturesBasic()
+      _ <- println("\n===\n").pure
+      _ <- parallelFuturesWithSequence()
+      _ <- println("\n===\n").pure
+      _ <- parallelFuturesWithTraverse()
+      _ <- println("\n===\n").pure
+      _ <- parallelFuturesWithCartesians()
+    } yield println("\n===\n")
+
+    Await.result(program, Inf)
+  }
+
+  private def printer: (List[String]) => Unit = _.foreach(println)
+
+  private def print3: (String, String, String) => Unit = Seq(_, _, _).foreach(println)
+
+}
+
+{% endhighlight %}
+
+
