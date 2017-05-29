@@ -1,5 +1,6 @@
 ---
 title:  Scala learning resources
+description: I've put together a list of blog, guides, articles, videos and courses I found useful by actually reading them, trying them, watching them, completing them. I've gone over a lot of stuff on the internet and these few items deserve a mention and are well worth your time.
 date:   2017-05-29 20:00:00
 category: scala
 tags: scala cats learning

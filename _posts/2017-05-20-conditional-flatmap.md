@@ -1,5 +1,6 @@
 ---
 title:  Conditional flatMap - tweaking sequences of effects with boolean conditions
+description: How to perform a step in a for-comprehension only under a certain condition with a conditional flatMap
 date:   2017-05-20 22:28:00
 category: scala
 tags: scala cats

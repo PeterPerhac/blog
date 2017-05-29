@@ -1,5 +1,6 @@
 ---
 title:  Concurrent evaluation of Futures
+description: A look at a number of options to perform several Future evaluations concurrently with (and without) help of the cats library.
 date:   2017-05-23 19:02:00
 category: scala
 tags: scala cats
