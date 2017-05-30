@@ -17,14 +17,14 @@ I've put together a list of blog, guides, articles, videos and courses I found u
 - [Advanced Scala with Cats e-book by Underscore](https://gumroad.com/l/advanced-scala)
 - [Cats](http://typelevel.org/cats/)
 - [Cats exercises](https://www.scala-exercises.org/cats/)
-- [Herding Cats](http://eed3si9n.com/herding-cats/Combined+Pages.html)
 - [Michael Pilquist's series of tutorials on YouTube](https://youtu.be/Dsd4pc99FSY)
 - [Scala Tagged Types](http://www.vlachjosef.com/tagged-types-introduction/)
+- [The Aux Pattern](http://gigiigig.github.io/posts/2015/09/13/aux-pattern.html)
 - [Of Variance and Functors](http://typelevel.org/blog/2016/02/04/variance-and-functors.html)
 - [Monad Transformers](http://enear.github.io/2016/04/11/monad-transformers/)
 - [Railway oriented programming](https://vimeo.com/113707214)
   - Railway oriented programming: Error handling in functional languages by Scott Wlaschin
 
 
-The Learn [Learn you a Haskell for Great Good!](http://learnyouahaskell.com/chapters) book is a great way to learn functional programming concepts. It explains things like currying, type constructors, kinds, monoids, functors, applicative functors, monads in a very clear, easy-to-follow style. Yes, I know, it's not Scala. It's Haskell. And yes, you should learn you it for great good it will do you.
+The [Learn you a Haskell for Great Good!](http://learnyouahaskell.com/chapters) book is a great way to learn functional programming concepts. It explains things like currying, type constructors, kinds, monoids, functors, applicative functors, monads in a very clear, easy-to-follow style. Yes, I know, it's not Scala. It's Haskell. And yes, you should learn you a Haskell. For great good it will do you.
 
