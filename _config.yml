@@ -29,6 +29,7 @@ links:
 paginate: 5
 excerpt_separator: "\n\n\n\n" # excerpt ends after three blank lines
 permalink: pretty
+future: false
 defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}, {scope: {path: "", type: "posts"}, values: {published: false}}]
 gems: [jekyll-feed, jekyll-paginate] # include feed plugin (supported by gh-pages)
 exclude: ["dem-codez"]
