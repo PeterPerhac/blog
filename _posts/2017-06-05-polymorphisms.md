@@ -14,7 +14,8 @@ We'll talk briefly about parametric, subtype and ad-hoc polymorphism, then focus
 
 The following polymorphism discussion is based in part on this [Herding Cats](http://eed3si9n.com/herding-cats/polymorphism.html) article.
 
-## 1. Parametric polymorphism
+## Polymorphism
+### 1. Parametric polymorphism
 
 Using parametric polymorphism, a function or a data type can be written generically so that it can handle values identically without depending on their type.[[1]][1] When the type of a value contains one or more unconstrained type variables, the value may adopt any type that results from substituting those variables with concrete types.
 
@@ -22,7 +23,7 @@ Using parametric polymorphism, a function or a data type can be written generica
   def fun[A](a:A): Unit = println(a)
 {% endhighlight %}
 
-## 2. Subtype polymorphism
+### 2. Subtype polymorphism
 
 We can constrain the type parameter by an **upper bound**: 
 
@@ -36,7 +37,7 @@ def plusBySubtype[A <: PlusIntf[A]](a1: A, a2: A): A =
 
 This requires the types used in `plusBySubtype` to _extend_ the trait. This means, it could **not** _be_ an `Int`.
 
-## 3. Ad-hoc polymorphism
+### 3. Ad-hoc polymorphism
 
 We can constrain the type parameter by a **context bound**: 
 
