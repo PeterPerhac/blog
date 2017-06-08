@@ -5,7 +5,7 @@ date:   2017-06-05 18:05:00
 category: scala
 tags: scala learning
 comments: false
-published: false
+published: true
 ---
 
 We'll talk briefly about parametric, subtype and ad-hoc polymorphism, then focus on _ad-hoc polymorphism_ and its relationship with the _type class pattern_ and higher-kinded types like **Functor**, then move on to discuss higher-kinded types shipped with the _Cats_ library.
@@ -61,16 +61,30 @@ This means that in order to call the `plus` method, the compiler will need to be
 
 ## Type classes
 
-What determines membership of a type `T` in a type class `TC` is the ability to provide an implementation of the trait `TC` for the specific type `T`.
-
-For example, the `String` type could be a member of the `Party` type class, if the compiler could find an instance of `Party[String]` in the implicit scope. This would serve as _evidence_ that the type `String` indeed belongs to the class of types that know how to `Party`.
+What determines membership of a type `T` in a type class `TC` is the ability to provide an implementation of the trait `TC` for the specific type `T`. For example, the `String` type could be a member of the `Party` type class, if the compiler could find an instance of `Party[String]` in the implicit scope. This would serve as _evidence_ that the type `String` indeed belongs to the class of types that __know how to `Party`__.
 
 ## Values, Types and Kinds
 
-Kinds are to types what types are to values. Different types can be of the same kind. For example `String`, `Int`, `Boolean` and `Banana` are of the _same kind_ - namely, they are all **proper** / concrete types. Some types are parameterised with other proper types: `List`, `Option`, `Try` and `Future`, are all of this kind. They can also be called type constructors, as they require some type argument(s) in order to construct a proper type. These would be classified as _first-order types_ - types that take other types as parameter. **Higher-order types** are of a different kind: they take a first-(or higher)-order type in order to produce a proper type - i.e. types parameterised with other type constructors.
+**Kinds are to types what types are to values.** Just like different values can be of the same type, Different types can be of the same kind. For example `String`, `Int`, `Boolean` and `Banana` are of the _same kind_ - namely, they are all **proper** types. The **kind** of a _proper type_ is usually denoted as `*`.
 
+-----
 
+Some types are parameterised with other _proper_ types: e.g. `List`, `Option`, `Try` and `Future`. Also known as _type constructors_, they require type argument(s) in order to construct a _proper_ type. These would be classified as **first-order types**. There are various **kinds** of first-order types: 
+ - `* -> *` for a type constructor like `List` or `Option` or `Function0`
+ - `* -> * -> *` for a type constructor that takes two type arguments like `Either` or `Map` or `Function1`
+ - `* -> * -> * -> * -> * -> *` for something as highly parameterised as `Function4`
 
+-----
+
+**Higher-order types** declare a first-order (or higher order) type parameter(s). Higher-order types declare type constructors as their type parameters. They are of a **higher kind**. Many higher-kinded types are provided by the [cats library][2] (or other libraries like [ScalaZ][3]):
+ - `(* -> *) -> *` as is `Functor[F[_]]` or `Monad[F[_]]`
+ - `(* -> *) -> * -> *` as is for example the `OptionT[F[_], A]` monad transformer
+ - `(* -> *) -> * -> * -> *` like the `EitherT[F[_], A, B]` monad transformer
+ - `(* -> *) -> (* -> *) -> * -> *` as in `EitherK[F[_], G[_], A]`
+
+## Cats
 
 [1]: https://en.wikipedia.org/wiki/Parametric_polymorphism#CITEREFPierce2002
+[2]: http://typelevel.org/cats/
+[3]: http://scalaz.github.io/scalaz/
 

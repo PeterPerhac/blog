@@ -78,7 +78,7 @@ import cats.syntax.cartesian._
 findFruit("apple") |@| findFruit("banana") |@| findFruit("cherry") map print3
 {% endhighlight %}
 
-Cats library provides a neat syntax for creating cross products - _cartesians_. Importing `cats.syntax.cartesian._` brings the `|@|` (scream operator) into the game. This is used for building up an instance of a `CartesianBuilder` of appropriate arity (i.e. 2..22) You can then call `apWith`, `map`, `contramap`, `imap` or `tupled` on it and in this way manipulate the final result of all concurrently executed futures. This works very nicely when you have a case class modeling the composite of all (completed) future values. Like so:
+[Cats library][1] provides a neat syntax for creating cross products - _cartesians_. Importing `cats.syntax.cartesian._` brings the `|@|` (scream operator) into the game. This is used for building up an instance of a `CartesianBuilder` of appropriate arity (i.e. 2..22) You can then call `apWith`, `map`, `contramap`, `imap` or `tupled` on it and in this way manipulate the final result of all concurrently executed futures. This works very nicely when you have a case class modeling the composite of all (completed) future values. Like so:
 
 {% highlight scala %}
 case class Magic(foo:Foo, bar: Bar, baz: Baz)
@@ -138,7 +138,7 @@ I found your cherry
 ===
 {%endhighlight %}
 
-And just for completeness, here's copy-pastable code you could throw into a REPL to try this out. Remember to include the cats library on your classpath.
+And just for completeness, here's copy-pastable code you could throw into a REPL to try this out. Remember to include the [cats library][1] on your classpath.
 
 {%highlight scala %}
 
@@ -219,3 +219,4 @@ object ParallelVsSerialExecution {
 {% endhighlight %}
 
 
+[1]:http://typelevel.org/cats/

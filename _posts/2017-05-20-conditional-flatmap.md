@@ -53,7 +53,7 @@ exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
 
 This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an instance of `Applicative[F]` available in the implicit scope.
 
-We can make further use of the Cats library to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
+We can make further use of the [cats library][1] to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
 
 Just like `flatMap` takes a function `A => F[B]`, `ifM` takes **two** functions of this shape, but only flatMaps _one of them_. The first paramter to `ifM` is called `ifTrue` and the second one is `ifFalse` and which one gets flatmapped is obvious. I made the conditional service call in the `ifTrue` part, leaving the `ifFalse` as a successfully completed `Future` of `Unit`.
 
@@ -97,3 +97,4 @@ And that's all, folks.
 
 PS: cats will provide `whenA` syntax from version 1.0. Check it out when it comes out. It can be used to achieve similar sort of thing.
 
+[1]:http://typelevel.org/cats/
