@@ -35,7 +35,7 @@ def plusBySubtype[A <: PlusIntf[A]](a1: A, a2: A): A =
   a1.plus(a2)
 {% endhighlight %}
 
-This requires the types used in `plusBySubtype` to _extend_ the trait. This means, it could **not** _be_ an `Int`.
+This requires the types used in `plusBySubtype` to _extend_ the trait. This means, it could not _be_ an `Int`.
 
 ### 3. Ad-hoc polymorphism
 
@@ -58,11 +58,13 @@ def plus[A](a1: A, a2: A)(implicit cpa: CanPlus[A]): A =
   cpa.plus(a1, a2)
 {% endhighlight %}
 
-This means that in order to call the `plus` method, the compiler will need to be able to find evidence that behaviour/properties described by `CanPlus` have been implemented for the actual type of `A` (or an explicit instance must be provided by programmer).
+This means that in order to call the `plus` method, the compiler will need to be able to find evidence that behaviour/properties described by `CanPlus` have been implemented for the actual type of `A` (or an explicit instance must be provided by the programmer).
 
 ## Type classes
 
-What determines membership of a type `T` in a type class `TC` is the ability to provide an implementation of the trait `TC` for the specific type `T`. For example, the `String` type could be a member of the `Party` type class, if the compiler could find an instance of `Party[String]` in the implicit scope. This would serve as _evidence_ that the type `String` indeed belongs to the class of types that __know how to `Party`__.
+What determines membership of a type `T` in a type class `TC` is the ability to provide an implementation of the trait `TC` for the specific type `T` (i.e. an instance of `TC[T]`). For example, the `String` type could be a member of the `Party` type class, if the compiler could find an implicit instance of `Party[String]` in scope. This would serve as _evidence_ that the type `String` indeed belongs to the class of types that __know how to `Party`__.
+
+([Read this article](http://eed3si9n.com/revisiting-implicits-without-import-tax) to understand how implicits are resolved.)
 
 ## Values, Types and Kinds
 
