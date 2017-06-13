@@ -51,7 +51,7 @@ Let's focus on this line:
 exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
 {% endhighlight %}
 
-This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an implicit instance of `Applicative[F]` available in scope. ([Read this article](http://eed3si9n.com/revisiting-implicits-without-import-tax) to understand how implicits are resolved)
+This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an implicit instance of `Applicative[F]` available in scope. ([Read Eugene's article](http://eed3si9n.com/revisiting-implicits-without-import-tax) to understand how implicits are resolved)
 
 We can make further use of the [cats library][1] to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
 
