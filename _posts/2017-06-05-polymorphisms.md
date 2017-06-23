@@ -87,7 +87,29 @@ Some types are parameterised with other _proper_ types: e.g. `List`, `Option`, `
 
 ## Cats
 
+There's a good discussion of [Type classes][4] on the Typelevel _Cats_ site, from which we'll "lift" this line:
+
+> Functional programming tends towards a combination of parametric polymorphism [...] and ad-hoc polymorphism.
+
+The cats library revolves around a rich collection of type classes that encode a variety of **higher-level abstractions**. `List` is an abstraction, `Option` is another, and _both_ have something in common: both could be viewed as mappable containers - functors. Thus `Functor` is a higher-level abstraction - an abstraction over abstractions.
+
+### Laws
+The cats library provides a number of **lawful** type class _instances_. All type classes come with a set of implicit laws - laws that are not explicitly laid out in the type class itself. For example a `Semigroup` implementation must provide an associative binary `combine` operation. The name, number and type of parameters and type of return value of the operation is known from its signature:
+
+```scala
+def combine(a1:T, a2:T):T
+```
+
+What is not obvious from the above is the requirement that the combine operation be **associative**. You, as the library client could attempt to hand-craft an instance of `Semigroup[Int]` for the integer subtraction operation, perhaps something like this:
+
+```scala
+def combine(a1:Int, a2:Int):Int = a1 - a2
+```
+
+However the integer subtraction operation is not associative, hence a lawful `Semigroup` instance for it does not exist. This thing we created above is _not_ a semigroup, and it will not work as expected. Code may use an instance of `Semigroup[Int]` to `combine` while _folding_ **left** or **right**, assuming that the `Semigroup[Int]` instance adheres to the **associativity law**. 
+
 [1]: https://en.wikipedia.org/wiki/Parametric_polymorphism#CITEREFPierce2002
 [2]: http://typelevel.org/cats/
 [3]: http://scalaz.github.io/scalaz/
+[4]: http://typelevel.org/cats/typeclasses.html
 
