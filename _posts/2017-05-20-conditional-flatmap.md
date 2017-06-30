@@ -8,7 +8,7 @@ published: true
 
 ---
 
-I found myself in a situation when several Futures had to execute in a predefined sequence and one of those Futures was to be executed _only uder a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM`:
+I found myself in a situation when several Futures had to execute in a predefined sequence and one of those Futures was to be executed _only under a certain condition_. I immediately reached for the cats-provided flatMap syntax (`cats.syntax.flatMap._`) and my pet `ifM`:
 
 {% highlight scala %}
   _ <- condition.pure.ifM(service.call(params), ().pure)
@@ -53,9 +53,9 @@ exit.pure.ifM(keystore.cache(INELIGIBILITY_REASON, question.name), ().pure)
 
 This lifts the boolean condition `exit` into the `Future` context using `.pure` syntax. `pure` method is defined on the `Applicative` type class and if we import `cats.syntax.applicative._` we can lift _any_ value into an effect `F`, provided there is an implicit instance of `Applicative[F]` available in scope. ([Read Eugene's article](http://eed3si9n.com/revisiting-implicits-without-import-tax) to understand how implicits are resolved)
 
-We can make further use of the [cats library][1] to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` etension method).
+We can make further use of the [cats library][1] to enrich any `Future[Boolean]` (indeed, a boolean in any monadic context) with the `ifM` method. `ifM` is introduced by the import of `cats.syntax.flatMap._` and allows for flatMapping different expressions, depending on what's in the box (i.e. the boolean value in the context, on which we added the `ifM` extension method).
 
-Just like `flatMap` takes a function `A => F[B]`, `ifM` takes **two** functions of this shape, but only flatMaps _one of them_. The first paramter to `ifM` is called `ifTrue` and the second one is `ifFalse` and which one gets flatmapped is obvious. I made the conditional service call in the `ifTrue` part, leaving the `ifFalse` as a successfully completed `Future` of `Unit`.
+Just like `flatMap` takes a function `A => F[B]`, `ifM` takes **two** functions of this shape, but only flatMaps _one of them_. The first parameter to `ifM` is called `ifTrue` and the second one is `ifFalse` and which one gets flatmapped is obvious. I made the conditional service call in the `ifTrue` part, leaving the `ifFalse` as a successfully completed `Future` of `Unit`.
 
 But when I slept on it and re-visited the line the next day, I thought I would much rather have it written like this:
 

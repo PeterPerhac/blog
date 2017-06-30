@@ -67,7 +67,7 @@ import cats.syntax.traverse._
 List("apple", "banana", "cherry") traverse findFruit map printer
 {% endhighlight %}
 
-If you look at the previous solution with `sequence` you might wonder if it really is necessary to repeat the name of the function `findFruit` three times over. If the function used for obtaining the future value inside the list is alays the same, we could use the `traverse` method (at the core of the Traverse type class) and "visit" each value in the list with the future-producing function. All of these produced futures together, will form an eventual list of results. Once that list is availanle, we'll map it to make us of the result.
+If you look at the previous solution with `sequence` you might wonder if it really is necessary to repeat the name of the function `findFruit` three times over. If the function used for obtaining the future value inside the list is alays the same, we could use the `traverse` method (at the core of the Traverse type class) and "visit" each value in the list with the future-producing function. All of these produced futures together, will form an eventual list of results. Once that list is available, we'll map it to make use of the result.
 
 ______
 
