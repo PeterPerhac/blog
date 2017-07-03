@@ -68,8 +68,8 @@ But when I slept on it and re-visited the line the next day, I thought I would m
 Remember the part about natural looking DSLs? With the help of an implicit class and some cat-herding skills, I was able to make my dream come true:
 
 {% highlight scala %}
-implicit class CustomApplicativeOps[F[_] : Applicative, A](fa: => F[A]) {
-  def onlyIf(condition: Boolean)(implicit F: Applicative[F]): F[Unit] =
+implicit class CustomApplicativeOps[F[_] : Applicative, A](fa: => F[A])(implicit F: Applicative[F]) {
+  def onlyIf(condition: Boolean): F[Unit] =
     if (condition) F.map(fa)(_ => ()) else F.pure(())
 }
 {% endhighlight %}
