@@ -14,7 +14,7 @@ I've put together a list of blog, guides, articles, videos and courses I found u
 - [Pragmatic Scala book](http://amzn.to/2rR0g6I)
 - [The Neophyte's Guide to Scala](http://danielwestheide.com/scala/neophytes.html)
 - [Martin Odersky's course on Coursera](https://www.coursera.org/learn/progfun1)
-- [Advanced Scala with Cats e-book by Underscore](https://gumroad.com/l/advanced-scala)
+- [Scala with Cats e-book by Underscore](https://gumroad.com/l/scala-with-cats)
 - [Cats](http://typelevel.org/cats/)
 - [Cats exercises](https://www.scala-exercises.org/cats/)
 - [Michael Pilquist's series of tutorials on YouTube](https://youtu.be/Dsd4pc99FSY)
